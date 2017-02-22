@@ -18,7 +18,7 @@ Same as above with a short sensor range and sparse points of interest compared t
 Given a polygonal environment and a set of agents with starting positions and goal positions, move the agents to minimize the sum of completion time and formation error in the following form:
 
 ```tex
-$$ \int^T_01dt + k\int_0^T(||p_i-p_j||-d_{ij})^2dt\ $$
+\int^T_01dt + k\int_0^T(||p_i-p_j||-d_{ij})^2dt
 ```
 
 where T is the time of reaching the goal positions and d_ij is the desired distance between vehicles i and j. The parameters "goal_pos" in the json-files, define the desired formation, so d_ij can be computed from them. Assume k=1 for this task.

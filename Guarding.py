@@ -3,7 +3,7 @@ from plots import  plot_map
 from plots import plot_cover_range
 import matplotlib.pylab as plt
 import numpy as np
-from shapely.geometry import Point
+from shapely.geometry import Point,LineString,Polygon
 from scipy.spatial.distance import euclidean
 
 
@@ -49,7 +49,8 @@ def positioning_Guards(data,N,triesForSingleStation):
                 #count how many items can this new station cover
                 cover_count = 0
                 for item in items:
-                    if euclidean(item,[x,y])<= sensor_range:
+                    # if euclidean(item,[x,y])<= sensor_range:
+                    if isInSight(data,[x,y],item):
                         cover_count +=1
                         # items.remove(item)
                 if cover_count>maxCovered:
@@ -62,13 +63,26 @@ def positioning_Guards(data,N,triesForSingleStation):
         totalCovered += maxCovered
     return stations,totalCovered
 
+def isInSight(map,station,item):
+    polygons = map.obstacles_polygon
+    # print(station,item)
+    sensor_range = map.sensor_range
+    line = LineString([station,item])
+    if euclidean(station,item)>sensor_range:
+        return False
+    for polygon in polygons:
+        if line.crosses(polygon):
+            return False
+    return True
+
+
 
 
 
 if __name__ == "__main__":
     data = FetchData("Problems/problem_A12.json")
     plot_map(data)
-    stations,totalCovered = positioning_Guards(data,10,100)
+    stations,totalCovered = positioning_Guards(data,3,100)
     print(totalCovered)#83 for 3,100; 252 for 10,100; 258 for 10,1000;452 for 25,100; for 4,1000
     sensor_range = data.sensor_range
     # plot_map(data)

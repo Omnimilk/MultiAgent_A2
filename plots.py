@@ -3,6 +3,8 @@ from ReadJson import FetchData
 from matplotlib.patches import Polygon
 import numpy as np
 import matplotlib.patches as mpatches
+import itertools
+from shapely.geometry import LineString
 
 def plot_boundary_polygon(boundary_polygon):
 	np_boundary = np.asarray(boundary_polygon)
@@ -44,6 +46,25 @@ def plot_start_and_end_point(startPoints,endPoints):
 		plt.plot(x,y,'*')
 	for x,y in endPoints:
 		plt.plot(x,y,'s')
+
+def plot_convex_net(data):
+	obstacles = data.obstacles_polygon
+	points = data.boundary_polygon_list
+	for obs in data.obstacles_list:
+		points +=obs
+	for point1,point2 in itertools.permutations(points,2):
+		line = LineString([point1,point2])
+		nocross = True
+		for obs in obstacles:
+			if line.crosses(obs):
+				nocross = False
+				break
+		if nocross:
+			plt.plot([point1[0],point2[0]],[point1[1],point2[1]])
+
+
+
+
 def plot_map(data):
 	#takes FetchData instance
 	obstacles = data.obstacles_list
@@ -54,6 +75,7 @@ def plot_map(data):
 
 
 	plot_boundary_polygon(boundary_polygon=boundary_polygon)
+	plot_convex_net(data)
 	plot_obstacles(obstacles)
 	plot_start_and_end_point(startPoints,endPoints)
 	plot_items(items)

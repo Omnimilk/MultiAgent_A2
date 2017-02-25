@@ -2,7 +2,6 @@ import json
 from pprint import pprint
 import numpy as np
 from shapely.geometry import  Polygon
-from collections import  deque
 
 class FetchData(object):
     def __init__(self,fileName):
@@ -84,9 +83,10 @@ class FetchData(object):
 
 if __name__ == "__main__":
     data = FetchData("Problems/problem_A12.json")
-    print(data.start_positions)
-    print(data.goal_positions)
-    # data.showData()
-    with open('data.json', 'w') as outfile:
-        json.dump(data.data, outfile)
-    print(data.boundary_polygon_list)
+    print(len(data.items))
+    # print(data.start_positions)
+    # print(data.goal_positions)
+    # # data.showData()
+    # with open('data.json', 'w') as outfile:
+    #     json.dump(data.data, outfile)
+    # print(data.boundary_polygon_list)

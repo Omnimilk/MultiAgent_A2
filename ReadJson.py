@@ -48,7 +48,7 @@ class FetchData(object):
         items = []
         for key in self.data.keys():
             if key.startswith("item"):
-                items.append(self.data[key])
+                items.append(tuple(self.data[key]))
         return items
 
     def getStartPositions(self):

@@ -5,7 +5,7 @@ import matplotlib.pylab as plt
 import numpy as np
 from shapely.geometry import Point,LineString
 from scipy.spatial.distance import euclidean
-import itertools
+from VGUtility import isInSight
 
 
 def positioning_Guards(data,N,triesForSingleStation):

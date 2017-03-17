@@ -83,7 +83,8 @@ class FetchData(object):
 
 if __name__ == "__main__":
     data = FetchData("Problems/problem_A12.json")
-    print(len(data.items))
+    data.showData()
+    # print(len(data.items))
     # print(data.start_positions)
     # print(data.goal_positions)
     # # data.showData()

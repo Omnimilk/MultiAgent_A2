@@ -83,10 +83,5 @@ class FetchData(object):
 
 
 if __name__ == "__main__":
-    data = FetchData("Problems/problem_A12.json")
-    print(data.start_positions)
-    print(data.goal_positions)
-    # data.showData()
-    with open('data.json', 'w') as outfile:
-        json.dump(data.data, outfile)
-    print(data.boundary_polygon_list)
+    data = FetchData("Problems/problem_A4.json")
+    print(len(data.items))

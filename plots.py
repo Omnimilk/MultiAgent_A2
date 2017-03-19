@@ -37,6 +37,10 @@ def plot_kinematic_point(location,velocity,symbol):
 	vy = [location[1],location[1]+velocity[1]]
 	plt.plot(vx,vy,'r')
 
+def plot_path(path):
+	for i in range(len(path)-1):
+		plt.plot([path[i][0],path[i+1][0]],[path[i][1],path[i+1][1]])
+
 def plot_start_and_end_point(startPoints,endPoints):
 	# plot_kinematic_point(startPoint,startAngel,'r*')
 	# plot_kinematic_point(endPoint,endAngel,'rs')
@@ -60,6 +64,6 @@ def plot_map(data):
 
 
 if __name__ == '__main__':
-	data = FetchData('Problems/problem_A12.json')
+	data = FetchData('Problems/problem_A4.json')
 	plot_map(data)
 	plt.show()

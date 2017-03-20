@@ -68,7 +68,7 @@ def positioning_Guards(data,N,triesForSingleStation):
 if __name__ == "__main__":
     data = FetchData("Problems/problem_A12.json")
     plot_map(data)
-    stations,totalCovered = positioning_Guards(data,10,100)
+    stations,totalCovered = positioning_Guards(data,4,300)
     print(totalCovered)#83 for 3,100; 252 for 10,100; 258 for 10,1000;452 for 25,100; for 4,1000
     sensor_range = data.sensor_range
     # plot_map(data)

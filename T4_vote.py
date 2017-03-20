@@ -3,10 +3,11 @@ from VGUtility import VGshortest,calPathLength,touchPoint
 import collections
 from pprint import pprint
 from ant import ant_colony
+from Simulation import Map
 
 def findMinimumTimeAgent(data,item):
     # return a list of costs for each agent
-    shortestTimes = []
+    # shortestTimes = []
     minimum = float('inf')
     for i, startpos in enumerate(data.start_positions):
         path = VGshortest(data, startpos, item)
@@ -16,11 +17,12 @@ def findMinimumTimeAgent(data,item):
                 minimum = dist
                 miniarg = i
                 touchP = touchPoint(path,data.sensor_range)
+                ST =(dist-data.sensor_range)*1. / data.v_max
         else:
             miniarg = i
-        shortestTimes.append((dist-data.sensor_range)*1. / data.v_max)
+        # shortestTimes.append((dist-data.sensor_range)*1. / data.v_max)
     # return shortestTimes
-    return shortestTimes, miniarg,touchP
+    return ST, miniarg,touchP
 
 def vote(map):
     costProfile = []
@@ -30,30 +32,25 @@ def vote(map):
     for item in map.items:
         shortestTimes,miniarg,touchp = findMinimumTimeAgent(map,item)
         costProfile.append((shortestTimes,touchp))
-        voteTable.append(miniarg)
+        voteTable.append((miniarg,shortestTimes,touchp))
+
     # construct the responsibilityPartition
     for i, agent in enumerate(map.start_positions):
-        res = {j: map.items[j] for j, vote in enumerate(voteTable) if vote == i}
-        #agent start position with -1 index
-        st = {-1: agent}
-        #merge agent with its responsibility
-        dic = dict(st, **res)
+        res = {j: vote for j, vote in enumerate(voteTable) if vote[0] == i}
         #each agent index with a value which is an ordered dict
-        responsibilityPartition[i] = collections.OrderedDict(sorted(dic.iteritems(), key=lambda x: x[0]))
-    pprint(responsibilityPartition)
-    print(responsibilityPartition[1].get(10,"Not Found"))
+        responsibilityPartition[i] = collections.OrderedDict(sorted(res.iteritems(), key=lambda x: x[1]))
 
-    # do ant system for each agent on their responsibility
-    def distance(start, end):
-        return calPathLength(VGshortest(map, start, end))
+    ans =[]
+    for j,agent in enumerate(map.start_positions):
+        part = [tuple(agent)]
+        part.extend([tuple(x[2]) for _,x in responsibilityPartition[j].iteritems()])
+        ans.append(part)
+    pprint(ans)
+    simumap = Map(map,ans)
+    simumap.runGame()
 
 
-    answers = []
-    for key, responsibility in responsibilityPartition.items():
-        colony = ant_colony(responsibility, distance)
-        answer = colony.mainloop()
-        print(key, answer)
-        answers.append(answer)
+
 
 def main():
     map = FetchData("Problems/problem_A4.json")

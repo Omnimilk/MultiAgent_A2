@@ -163,11 +163,12 @@ class Map(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
-                if event.type == MOUSEBUTTONDOWN:
-                    self.__init__(self.data,self.pathCopy)
+                # if event.type == MOUSEBUTTONDOWN:
+                #     self.__init__(self.data,self.pathCopy)
             self._drawMap(ticks)
             pygame.display.update()
-            ticks = self.FPSCLOCK.tick(FPS)
+            # ticks = self.FPSCLOCK.tick(FPS)
+            ticks = self.FPSCLOCK.tick_busy_loop(FPS)
 
 def readAndConvert(filePath):
     rs = []
